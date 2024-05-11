@@ -2,8 +2,8 @@ package com.esosa.uni.services.implementations
 
 import com.esosa.uni.controllers.requests.CourseRequest
 import com.esosa.uni.controllers.responses.CourseResponse
-import com.esosa.uni.data.model.Course
-import com.esosa.uni.data.repository.ICourseRepository
+import com.esosa.uni.data.models.Course
+import com.esosa.uni.data.repositories.ICourseRepository
 import com.esosa.uni.services.interfaces.ICourseService
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service

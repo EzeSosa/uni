@@ -2,10 +2,10 @@ package com.esosa.uni.services.implementations
 
 import com.esosa.uni.controllers.requests.InscriptionRequest
 import com.esosa.uni.controllers.responses.InscriptionResponse
-import com.esosa.uni.data.model.Course
-import com.esosa.uni.data.model.Inscription
-import com.esosa.uni.data.model.User
-import com.esosa.uni.data.repository.IInscriptionRepository
+import com.esosa.uni.data.models.Course
+import com.esosa.uni.data.models.Inscription
+import com.esosa.uni.data.models.User
+import com.esosa.uni.data.repositories.IInscriptionRepository
 import com.esosa.uni.services.interfaces.ICourseService
 import com.esosa.uni.services.interfaces.IInscriptionService
 import com.esosa.uni.services.interfaces.IUserService
