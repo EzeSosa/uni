@@ -1,4 +1,4 @@
-package com.esosa.uni.data.model
+package com.esosa.uni.data.models
 
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
@@ -6,11 +6,10 @@ import jakarta.persistence.OneToMany
 import java.util.UUID
 
 @Entity
-data class User(
-    val username: String,
-    val password: String,
+data class Course(
     val name: String,
-    @OneToMany(mappedBy = "user")
+    val year: Int,
+    @OneToMany(mappedBy = "course")
     val inscriptions: List<Inscription> = emptyList(),
     @Id
     val id: UUID = UUID.randomUUID()

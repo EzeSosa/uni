@@ -1,4 +1,4 @@
-package com.esosa.uni.data.model
+package com.esosa.uni.data.models
 
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
