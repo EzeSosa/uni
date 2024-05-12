@@ -16,14 +16,12 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
 import java.util.*
-import kotlin.math.log
 
 @Service
 class AuthService(
     private val userDetailsService: CustomUserDetailsService,
     private val authManager: AuthenticationManager,
     private val jwtService: JWTService,
-    private val jwtProperties: JWTProperties,
     private val userRepository: IUserRepository,
     private val encoder: PasswordEncoder,
     private val userService: UserService
@@ -42,7 +40,7 @@ class AuthService(
             authManager.authenticate(UsernamePasswordAuthenticationToken(username, password))
 
             val user = userDetailsService.loadUserByUsername(username)
-            val accessToken = jwtService.generateToken(user, Date(System.currentTimeMillis() + jwtProperties.accessTokenExpiration))
+            val accessToken = jwtService.generateToken(user)
 
             AuthResponse(username.extractId(), accessToken)
         }
@@ -57,7 +55,4 @@ class AuthService(
 
     private fun RegisterRequest.createUser() =
         User(username, encoder.encode(password), name)
-
-    private fun extractIdFromUsername(username: String) =
-        userService.findUserByUsernameOrThrowException(username).id
 }

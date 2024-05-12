@@ -9,7 +9,7 @@ import java.util.*
 
 @Service
 class JWTService(
-    jwtProperties: JWTProperties
+    private val jwtProperties: JWTProperties
 ) {
 
     private val secretKey = Keys.hmacShaKeyFor(
@@ -18,14 +18,13 @@ class JWTService(
 
     fun generateToken(
         userDetails: UserDetails,
-        expirationDate: Date,
         additionalClaims: Map<String, Any> = emptyMap()
     ): String =
         Jwts.builder()
             .claims()
             .subject(userDetails.username)
             .issuedAt(Date(System.currentTimeMillis()))
-            .expiration(expirationDate)
+            .expiration(Date(System.currentTimeMillis() + jwtProperties.accessTokenExpiration))
             .add(additionalClaims)
             .and()
             .signWith(secretKey)
