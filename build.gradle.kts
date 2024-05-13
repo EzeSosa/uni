@@ -27,6 +27,7 @@ dependencies {
 	implementation("org.hibernate:hibernate-validator:8.0.0.Final")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("io.jsonwebtoken:jjwt-api:0.12.5")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
 
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 

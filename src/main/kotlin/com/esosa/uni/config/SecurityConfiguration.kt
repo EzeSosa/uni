@@ -18,6 +18,15 @@ class SecurityConfiguration(
     private val authProvider: AuthenticationProvider
 ) {
 
+    private val WHITE_LIST_URL = arrayOf(
+        "/auth/*",
+        "/auth/**",
+        "/swagger-ui/**",
+        "/v3/api-docs/**",
+        "/error",
+        "/",
+    )
+
     @Bean
     fun securityFilterChain(
         http: HttpSecurity,
@@ -27,7 +36,7 @@ class SecurityConfiguration(
             .csrf { it.disable() }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/auth/**", "/error").permitAll()
+                    .requestMatchers(*WHITE_LIST_URL).permitAll()
                     .requestMatchers(POST, "/courses").hasRole(Role.ADMIN.name)
                     .anyRequest().authenticated()
             }
