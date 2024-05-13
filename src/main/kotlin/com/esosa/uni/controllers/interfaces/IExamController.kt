@@ -5,6 +5,7 @@ import com.esosa.uni.controllers.requests.UpdateExamRequest
 import com.esosa.uni.controllers.responses.ExamResponse
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus.*
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -22,4 +23,8 @@ interface IExamController {
     @PatchMapping("/{id}")
     @ResponseStatus(OK)
     fun updateExam(@RequestBody @Valid updateExamRequest: UpdateExamRequest, @PathVariable id: UUID) : ExamResponse
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(NO_CONTENT)
+    fun deleteExam(@PathVariable id: UUID)
 }

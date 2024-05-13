@@ -9,5 +9,6 @@ interface ICourseService {
     fun getCourses() : List<CourseResponse>
     fun createCourse(courseRequest: CourseRequest) : CourseResponse
     fun updateCourse(courseRequest: CourseRequest, id: UUID) : CourseResponse
+    fun deleteCourse(id: UUID)
     fun findCourseByIdOrThrowException(courseId: UUID) : Course
 }

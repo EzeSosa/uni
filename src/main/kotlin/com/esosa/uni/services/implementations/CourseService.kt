@@ -34,6 +34,12 @@ class CourseService(
         }
             .buildCourseResponse()
 
+    override fun deleteCourse(id: UUID) =
+        if (courseRepository.existsById(id))
+            courseRepository.deleteById(id)
+        else
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Course not found")
+
     override fun findCourseByIdOrThrowException(courseId: UUID): Course =
         courseRepository.findById(courseId)
             .orElseThrow { ResponseStatusException(HttpStatus.BAD_REQUEST, "Course not found") }

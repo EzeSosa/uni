@@ -7,5 +7,6 @@ import java.util.*
 
 interface IInscriptionService {
     fun createInscription(inscriptionRequest: InscriptionRequest) : InscriptionResponse
+    fun deleteInscription(id: UUID)
     fun findInscriptionByIdOrThrowException(id: UUID) : Inscription
 }

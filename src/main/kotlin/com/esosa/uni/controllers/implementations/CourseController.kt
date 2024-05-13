@@ -17,4 +17,7 @@ class CourseController (private val courseService: ICourseService) : ICourseCont
 
     override fun updateCourse(courseRequest: CourseRequest, id: UUID): CourseResponse =
         courseService.updateCourse(courseRequest, id)
+
+    override fun deleteCourse(id: UUID) =
+        courseService.deleteCourse(id)
 }

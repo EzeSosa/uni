@@ -18,4 +18,7 @@ class ExamController (private val examService: IExamService) : IExamController {
 
     override fun updateExam(@RequestBody @Valid updateExamRequest: UpdateExamRequest, @PathVariable id: UUID): ExamResponse =
         examService.updateExam(updateExamRequest, id)
+
+    override fun deleteExam(id: UUID) =
+        examService.deleteExam(id)
 }

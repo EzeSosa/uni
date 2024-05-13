@@ -4,8 +4,7 @@ import com.esosa.uni.data.enums.Role
 import com.esosa.uni.security.filter.JwtAuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod.PATCH
-import org.springframework.http.HttpMethod.POST
+import org.springframework.http.HttpMethod.*
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -31,6 +30,7 @@ class SecurityConfiguration(
                     .requestMatchers("/auth/**", "/error").permitAll()
                     .requestMatchers(POST, "/courses").hasRole(Role.ADMIN.name)
                     .requestMatchers(PATCH, "/courses/**").hasRole(Role.ADMIN.name)
+                    .requestMatchers(DELETE, "/courses/**").hasRole(Role.ADMIN.name)
                     .anyRequest().authenticated()
             }
             .sessionManagement {

@@ -40,6 +40,12 @@ class ExamService(
         }
             .buildExamResponse()
 
+    override fun deleteExam(id: UUID) =
+        if (examRepository.existsById(id))
+            examRepository.deleteById(id)
+        else
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Exam not found")
+
     override fun findExamByIdOrThrowException(id: UUID): Exam =
         examRepository.findById(id)
             .orElseThrow { ResponseStatusException(HttpStatus.BAD_REQUEST, "Course not found") }
