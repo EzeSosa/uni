@@ -2,8 +2,7 @@ package com.esosa.uni.controllers.responses
 
 import java.util.UUID
 
-data class AuthResponse(
+data class RefreshTokenResponse(
     val userId: UUID,
-    val accessToken: String,
-    val refreshToken: String
+    val newAccessToken: String
 )

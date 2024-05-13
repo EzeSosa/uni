@@ -6,6 +6,7 @@ import io.jsonwebtoken.security.Keys
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import java.util.*
+import kotlin.math.exp
 
 @Service
 class JWTService(
@@ -18,13 +19,14 @@ class JWTService(
 
     fun generateToken(
         userDetails: UserDetails,
+        expirationDate: Date,
         additionalClaims: Map<String, Any> = emptyMap()
     ): String =
         Jwts.builder()
             .claims()
             .subject(userDetails.username)
             .issuedAt(Date(System.currentTimeMillis()))
-            .expiration(Date(System.currentTimeMillis() + jwtProperties.accessTokenExpiration))
+            .expiration(expirationDate)
             .add(additionalClaims)
             .and()
             .signWith(secretKey)

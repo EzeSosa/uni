@@ -1,8 +1,10 @@
 package com.esosa.uni.controllers.interfaces
 
 import com.esosa.uni.controllers.requests.LoginRequest
+import com.esosa.uni.controllers.requests.RefreshTokenRequest
 import com.esosa.uni.controllers.requests.RegisterRequest
 import com.esosa.uni.controllers.responses.AuthResponse
+import com.esosa.uni.controllers.responses.RefreshTokenResponse
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus.*
 import org.springframework.web.bind.annotation.PostMapping
@@ -19,4 +21,8 @@ interface IAuthController {
     @PostMapping("/login")
     @ResponseStatus(CREATED)
     fun login(@RequestBody @Valid loginRequest: LoginRequest) : AuthResponse
+
+    @PostMapping("/refresh")
+    @ResponseStatus(CREATED)
+    fun refresh(@RequestBody @Valid refreshTokenRequest: RefreshTokenRequest) : RefreshTokenResponse?
 }
