@@ -23,13 +23,24 @@ class CourseService(
         courseRepository.save(courseRequest.createCourse())
             .buildCourseResponse()
 
+    override fun updateCourse(courseRequest: CourseRequest, id: UUID): CourseResponse =
+        findCourseByIdOrThrowException(id).also {
+            courseRepository.save(
+                it.apply {
+                    it.name = courseRequest.name
+                    it.year = courseRequest.year
+                }
+            )
+        }
+            .buildCourseResponse()
+
     override fun findCourseByIdOrThrowException(courseId: UUID): Course =
         courseRepository.findById(courseId)
             .orElseThrow { ResponseStatusException(HttpStatus.BAD_REQUEST, "Course not found") }
 
-    private fun CourseRequest.createCourse() =
+    private fun CourseRequest.createCourse(): Course =
         Course(name, year)
 
-    private fun Course.buildCourseResponse() =
+    private fun Course.buildCourseResponse(): CourseResponse =
         CourseResponse(id, name, year)
 }

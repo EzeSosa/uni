@@ -5,6 +5,7 @@ import com.esosa.uni.controllers.requests.CourseRequest
 import com.esosa.uni.controllers.responses.CourseResponse
 import com.esosa.uni.services.interfaces.ICourseService
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 @RestController
 class CourseController (private val courseService: ICourseService) : ICourseController {
@@ -13,4 +14,7 @@ class CourseController (private val courseService: ICourseService) : ICourseCont
 
     override fun createCourse(courseRequest: CourseRequest): CourseResponse =
         courseService.createCourse(courseRequest)
+
+    override fun updateCourse(courseRequest: CourseRequest, id: UUID): CourseResponse =
+        courseService.updateCourse(courseRequest, id)
 }

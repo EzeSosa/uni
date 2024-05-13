@@ -8,8 +8,8 @@ import java.util.UUID
 
 @Entity
 data class Exam(
-    val date: LocalDate,
-    val grade: Double,
+    var date: LocalDate,
+    var grade: Double,
     @ManyToOne
     val inscription: Inscription,
     @Id

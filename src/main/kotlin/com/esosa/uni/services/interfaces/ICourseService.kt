@@ -8,5 +8,6 @@ import java.util.UUID
 interface ICourseService {
     fun getCourses() : List<CourseResponse>
     fun createCourse(courseRequest: CourseRequest) : CourseResponse
+    fun updateCourse(courseRequest: CourseRequest, id: UUID) : CourseResponse
     fun findCourseByIdOrThrowException(courseId: UUID) : Course
 }

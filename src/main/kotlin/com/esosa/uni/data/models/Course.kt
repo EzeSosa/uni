@@ -7,8 +7,8 @@ import java.util.UUID
 
 @Entity
 data class Course(
-    val name: String,
-    val year: Int,
+    var name: String,
+    var year: Int,
     @OneToMany(mappedBy = "course")
     val inscriptions: List<Inscription> = emptyList(),
     @Id
