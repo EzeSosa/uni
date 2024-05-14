@@ -20,9 +20,9 @@ interface IAuthController {
 
     @PostMapping("/login")
     @ResponseStatus(CREATED)
-    fun login(@RequestBody @Valid loginRequest: LoginRequest) : AuthResponse
+    fun login(@RequestBody @Valid loginRequest: LoginRequest): AuthResponse
 
     @PostMapping("/refresh")
     @ResponseStatus(CREATED)
-    fun refresh(@RequestBody @Valid refreshTokenRequest: RefreshTokenRequest) : RefreshTokenResponse?
+    fun refresh(@RequestBody @Valid refreshTokenRequest: RefreshTokenRequest): RefreshTokenResponse?
 }

@@ -6,8 +6,8 @@ import com.esosa.uni.data.models.User
 import java.util.UUID
 
 interface IUserService {
-    fun getUserInscriptions(id: UUID) : List<InscriptionResponse>
-    fun getUserExams(id: UUID) : List<ExamResponse>
-    fun findUserByIdOrThrowException(id: UUID) : User
-    fun findUserByUsernameOrThrowException(username: String) : User
+    fun getUserInscriptions(id: UUID): List<InscriptionResponse>
+    fun getUserExams(id: UUID): List<ExamResponse>
+    fun findUserByIdOrThrowException(id: UUID): User
+    fun findUserByUsernameOrThrowException(username: String): User
 }

@@ -18,11 +18,11 @@ import java.util.UUID
 interface IExamController {
     @PostMapping
     @ResponseStatus(CREATED)
-    fun createExam(@RequestBody @Valid examRequest: ExamRequest) : ExamResponse
+    fun createExam(@RequestBody @Valid examRequest: ExamRequest): ExamResponse
 
     @PatchMapping("/{id}")
     @ResponseStatus(OK)
-    fun updateExam(@RequestBody @Valid updateExamRequest: UpdateExamRequest, @PathVariable id: UUID) : ExamResponse
+    fun updateExam(@RequestBody @Valid updateExamRequest: UpdateExamRequest, @PathVariable id: UUID): ExamResponse
 
     @DeleteMapping("/{id}")
     @ResponseStatus(NO_CONTENT)

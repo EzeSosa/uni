@@ -7,8 +7,8 @@ import com.esosa.uni.data.models.Exam
 import java.util.UUID
 
 interface IExamService {
-    fun createExam(examRequest: ExamRequest) : ExamResponse
-    fun updateExam(updateExamRequest: UpdateExamRequest, id: UUID) : ExamResponse
+    fun createExam(examRequest: ExamRequest): ExamResponse
+    fun updateExam(updateExamRequest: UpdateExamRequest, id: UUID): ExamResponse
     fun deleteExam(id: UUID)
-    fun findExamByIdOrThrowException(id: UUID) : Exam
+    fun findExamByIdOrThrowException(id: UUID): Exam
 }

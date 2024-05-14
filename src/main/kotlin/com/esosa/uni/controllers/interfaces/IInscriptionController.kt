@@ -16,7 +16,7 @@ import java.util.*
 interface IInscriptionController {
     @PostMapping
     @ResponseStatus(CREATED)
-    fun createInscription(@RequestBody @Valid inscriptionRequest: InscriptionRequest) : InscriptionResponse
+    fun createInscription(@RequestBody @Valid inscriptionRequest: InscriptionRequest): InscriptionResponse
 
     @DeleteMapping("/{id}")
     @ResponseStatus(NO_CONTENT)

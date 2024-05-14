@@ -6,7 +6,7 @@ import com.esosa.uni.data.models.Inscription
 import java.util.*
 
 interface IInscriptionService {
-    fun createInscription(inscriptionRequest: InscriptionRequest) : InscriptionResponse
+    fun createInscription(inscriptionRequest: InscriptionRequest): InscriptionResponse
     fun deleteInscription(id: UUID)
-    fun findInscriptionByIdOrThrowException(id: UUID) : Inscription
+    fun findInscriptionByIdOrThrowException(id: UUID): Inscription
 }

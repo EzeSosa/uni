@@ -8,6 +8,6 @@ import com.esosa.uni.controllers.responses.RefreshTokenResponse
 
 interface IAuthService {
     fun register(registerRequest: RegisterRequest)
-    fun login(loginRequest: LoginRequest) : AuthResponse
-    fun refresh(refreshTokenRequest: RefreshTokenRequest) : RefreshTokenResponse?
+    fun login(loginRequest: LoginRequest): AuthResponse
+    fun refresh(refreshTokenRequest: RefreshTokenRequest): RefreshTokenResponse?
 }

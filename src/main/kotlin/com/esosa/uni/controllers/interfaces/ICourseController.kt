@@ -22,11 +22,11 @@ interface ICourseController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    fun createCourse(@RequestBody @Valid courseRequest: CourseRequest) : CourseResponse
+    fun createCourse(@RequestBody @Valid courseRequest: CourseRequest): CourseResponse
 
     @PatchMapping("/{id}")
     @ResponseStatus(OK)
-    fun updateCourse(@RequestBody @Valid courseRequest: CourseRequest, @PathVariable id: UUID) : CourseResponse
+    fun updateCourse(@RequestBody @Valid courseRequest: CourseRequest, @PathVariable id: UUID): CourseResponse
 
     @DeleteMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
