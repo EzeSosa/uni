@@ -5,9 +5,13 @@ import com.esosa.uni.controllers.requests.InscriptionRequest
 import com.esosa.uni.controllers.responses.InscriptionResponse
 import com.esosa.uni.services.interfaces.IInscriptionService
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 @RestController
 class InscriptionController (private val inscriptionService: IInscriptionService) : IInscriptionController {
     override fun createInscription(inscriptionRequest: InscriptionRequest): InscriptionResponse =
         inscriptionService.createInscription(inscriptionRequest)
+
+    override fun deleteInscription(id: UUID) =
+        inscriptionService.deleteInscription(id)
 }

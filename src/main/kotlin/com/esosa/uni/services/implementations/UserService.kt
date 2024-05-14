@@ -38,5 +38,5 @@ class UserService (
         InscriptionResponse(id, date, course.name)
 
     private fun Exam.buildExamResponse() =
-        ExamResponse(date, grade, inscription.course.name)
+        ExamResponse(id, date, grade, inscription.course.name)
 }

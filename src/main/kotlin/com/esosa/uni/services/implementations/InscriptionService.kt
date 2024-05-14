@@ -32,6 +32,12 @@ class InscriptionService(
                 .buildInscriptionResponse()
         }
 
+    override fun deleteInscription(id: UUID) =
+        if (inscriptionRepository.existsById(id))
+            inscriptionRepository.deleteById(id)
+        else
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Inscription not found")
+
     override fun findInscriptionByIdOrThrowException(id: UUID): Inscription =
         inscriptionRepository.findById(id)
             .orElseThrow { ResponseStatusException(HttpStatus.BAD_REQUEST, "Inscription not found") }
