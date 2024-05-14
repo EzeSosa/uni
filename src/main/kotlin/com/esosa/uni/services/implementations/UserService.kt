@@ -6,7 +6,9 @@ import com.esosa.uni.data.models.Exam
 import com.esosa.uni.data.models.Inscription
 import com.esosa.uni.data.models.User
 import com.esosa.uni.data.repositories.IUserRepository
+import com.esosa.uni.services.interfaces.IInscriptionService
 import com.esosa.uni.services.interfaces.IUserService
+import org.springframework.context.annotation.Lazy
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
@@ -14,17 +16,25 @@ import java.util.*
 
 @Service
 class UserService (
-    private val userRepository: IUserRepository
+    private val userRepository: IUserRepository,
+    private val inscriptionService: IInscriptionService
 ) : IUserService {
 
     override fun getUserInscriptions(id: UUID): List<InscriptionResponse> =
-        findUserByIdOrThrowException(id).inscriptions
-            .map { it.buildInscriptionResponse() }
+        findUserByIdOrThrowException(id).let {
+            inscriptionService.findUserInscriptions(it)
+                .map { inscription ->
+                    inscription.buildInscriptionResponse()
+                }
+        }
 
     override fun getUserExams(id: UUID): List<ExamResponse> =
-        findUserByIdOrThrowException(id).inscriptions
-            .flatMap { it.exams }
-            .map { it.buildExamResponse() }
+        findUserByIdOrThrowException(id).let {
+            inscriptionService.findUserExams(it)
+                .map { exam ->
+                    exam.buildExamResponse()
+                }
+        }
 
     override fun findUserByIdOrThrowException(id: UUID): User =
         userRepository.findById(id)

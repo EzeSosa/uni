@@ -50,6 +50,9 @@ class ExamService(
         examRepository.findById(id)
             .orElseThrow { ResponseStatusException(HttpStatus.BAD_REQUEST, "Course not found") }
 
+    override fun findInscriptionExams(inscription: Inscription): List<Exam> =
+        examRepository.findByInscription(inscription)
+
     fun ExamRequest.createExam(inscription: Inscription) =
         Exam(date, grade, inscription)
 
