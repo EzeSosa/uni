@@ -11,6 +11,7 @@ import com.esosa.uni.services.interfaces.IInscriptionService
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
+import java.time.LocalDate
 import java.util.*
 
 @Service
@@ -50,8 +51,14 @@ class ExamService(
         examRepository.findById(id)
             .orElseThrow { ResponseStatusException(HttpStatus.BAD_REQUEST, "Course not found") }
 
-    override fun findInscriptionExams(inscription: Inscription): List<Exam> =
-        examRepository.findByInscription(inscription)
+    override fun findInscriptionExams(
+        inscription: Inscription,
+        dateFrom: LocalDate?,
+        dateTo: LocalDate?,
+        minGrade: Double?,
+        maxGrade: Double?
+    ): List<Exam> =
+        examRepository.findByInscription(inscription, dateFrom, dateTo, minGrade, maxGrade)
 
     fun ExamRequest.createExam(inscription: Inscription) =
         Exam(date, grade, inscription)

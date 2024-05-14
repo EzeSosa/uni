@@ -8,10 +8,10 @@ import com.esosa.uni.data.models.User
 import com.esosa.uni.data.repositories.IUserRepository
 import com.esosa.uni.services.interfaces.IInscriptionService
 import com.esosa.uni.services.interfaces.IUserService
-import org.springframework.context.annotation.Lazy
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
+import java.time.LocalDate
 import java.util.*
 
 @Service
@@ -28,9 +28,9 @@ class UserService (
                 }
         }
 
-    override fun getUserExams(id: UUID): List<ExamResponse> =
+    override fun getUserExams(id: UUID, dateFrom: LocalDate?, dateTo: LocalDate?, minGrade: Double?, maxGrade: Double?): List<ExamResponse> =
         findUserByIdOrThrowException(id).let {
-            inscriptionService.findUserExams(it)
+            inscriptionService.findUserExams(it, dateFrom, dateTo, minGrade, maxGrade)
                 .map { exam ->
                     exam.buildExamResponse()
                 }

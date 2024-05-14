@@ -1,7 +1,6 @@
 package com.esosa.uni.services.implementations
 
 import com.esosa.uni.controllers.requests.InscriptionRequest
-import com.esosa.uni.controllers.responses.ExamResponse
 import com.esosa.uni.controllers.responses.InscriptionResponse
 import com.esosa.uni.data.models.Course
 import com.esosa.uni.data.models.Exam
@@ -16,6 +15,7 @@ import org.springframework.context.annotation.Lazy
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
+import java.time.LocalDate
 import java.util.*
 
 @Service
@@ -50,9 +50,15 @@ class InscriptionService(
     override fun findUserInscriptions(user: User): List<Inscription> =
         inscriptionRepository.findByUser(user)
 
-    override fun findUserExams(user: User): List<Exam> =
+    override fun findUserExams(
+        user: User,
+        dateFrom: LocalDate?,
+        dateTo: LocalDate?,
+        minGrade: Double?,
+        maxGrade: Double?
+    ): List<Exam> =
         findUserInscriptions(user)
-            .flatMap { examService.findInscriptionExams(it) }
+            .flatMap { examService.findInscriptionExams(it, dateFrom, dateTo, minGrade, maxGrade) }
 
     private fun Inscription.buildInscriptionResponse() =
         InscriptionResponse(id, date, course.name)

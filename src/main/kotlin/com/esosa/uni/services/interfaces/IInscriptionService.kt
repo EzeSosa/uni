@@ -5,6 +5,7 @@ import com.esosa.uni.controllers.responses.InscriptionResponse
 import com.esosa.uni.data.models.Exam
 import com.esosa.uni.data.models.Inscription
 import com.esosa.uni.data.models.User
+import java.time.LocalDate
 import java.util.*
 
 interface IInscriptionService {
@@ -12,5 +13,5 @@ interface IInscriptionService {
     fun deleteInscription(id: UUID)
     fun findInscriptionByIdOrThrowException(id: UUID): Inscription
     fun findUserInscriptions(user: User): List<Inscription>
-    fun findUserExams(user: User): List<Exam>
+    fun findUserExams(user: User, dateFrom: LocalDate?, dateTo: LocalDate?, minGrade: Double?, maxGrade: Double?): List<Exam>
 }
