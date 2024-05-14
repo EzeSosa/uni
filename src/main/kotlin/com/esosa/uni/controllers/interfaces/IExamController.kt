@@ -29,9 +29,11 @@ interface IExamController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(OK)
+    @Operation(summary = "Updates a registered exam. Only can update date and grade")
     fun updateExam(@RequestBody @Valid updateExamRequest: UpdateExamRequest, @PathVariable id: UUID) : ExamResponse
 
     @DeleteMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
+    @Operation(summary = "Deletes a registered exam")
     fun deleteExam(@PathVariable id: UUID)
 }

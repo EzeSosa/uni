@@ -27,5 +27,6 @@ interface IInscriptionController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
+    @Operation(summary = "Deletes a registered inscription")
     fun deleteInscription(@PathVariable id: UUID)
 }

@@ -34,9 +34,11 @@ interface ICourseController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(OK)
+    @Operation(summary = "Updates a registered course. Only can update name and year")
     fun updateCourse(@RequestBody @Valid courseRequest: CourseRequest, @PathVariable id: UUID) : CourseResponse
 
     @DeleteMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
+    @Operation(summary = "Deletes a registered course")
     fun deleteCourse(@PathVariable id: UUID)
 }

@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.servers.Server
 
 @OpenAPIDefinition(
     info = Info(
-        title = "Uni API - Documentation",
+        title = "Speficiation - Uni API",
         description = "Uni API that allows a user to manage their courses, inscriptions to courses and exams.",
         version = "1.0.0",
     ),
