@@ -6,11 +6,10 @@ import io.jsonwebtoken.security.Keys
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import java.util.*
-import kotlin.math.exp
 
 @Service
 class JWTService(
-    private val jwtProperties: JWTProperties
+    jwtProperties: JWTProperties
 ) {
 
     private val secretKey = Keys.hmacShaKeyFor(

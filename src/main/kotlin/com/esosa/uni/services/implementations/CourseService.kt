@@ -20,8 +20,14 @@ class CourseService(
             .map { it.buildCourseResponse() }
 
     override fun createCourse(courseRequest: CourseRequest): CourseResponse =
-        courseRepository.save(courseRequest.createCourse())
-            .buildCourseResponse()
+        with(courseRequest) {
+            if (courseRepository.existsByNameAndYear(name, year))
+                throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Course already exists")
+            else
+                courseRepository.save(this.createCourse())
+                    .buildCourseResponse()
+        }
+
 
     override fun updateCourse(courseRequest: CourseRequest, id: UUID): CourseResponse =
         findCourseByIdOrThrowException(id).also {
