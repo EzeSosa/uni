@@ -18,15 +18,15 @@ import org.springframework.security.crypto.password.PasswordEncoder
 class AuthConfiguration {
 
     @Bean
-    fun userDetailsService(userRepository: IUserRepository) : CustomUserDetailsService =
+    fun userDetailsService(userRepository: IUserRepository): CustomUserDetailsService =
         CustomUserDetailsService(userRepository)
 
     @Bean
-    fun passwordEncoder() : PasswordEncoder =
+    fun passwordEncoder(): PasswordEncoder =
         BCryptPasswordEncoder()
 
     @Bean
-    fun authenticationProvider(userRepository: IUserRepository) : AuthenticationProvider =
+    fun authenticationProvider(userRepository: IUserRepository): AuthenticationProvider =
         DaoAuthenticationProvider().also {
             it.setUserDetailsService(userDetailsService(userRepository))
             it.setPasswordEncoder(passwordEncoder())

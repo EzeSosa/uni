@@ -22,12 +22,12 @@ class ExamService(
 
     override fun createExam(examRequest: ExamRequest): ExamResponse =
         with(examRequest) {
-            val inscription = inscriptionService.findInscriptionByIdOrThrowException(inscriptionId)
-
-            examRepository.save(
-                createExam(inscription)
-            )
-                .buildExamResponse()
+            inscriptionService.findInscriptionByIdOrThrowException(inscriptionId).let {
+                examRepository.save(
+                    createExam(it)
+                )
+                    .buildExamResponse()
+            }
         }
 
     override fun updateExam(updateExamRequest: UpdateExamRequest, id: UUID): ExamResponse =

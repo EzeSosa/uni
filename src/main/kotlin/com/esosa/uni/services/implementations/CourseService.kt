@@ -28,7 +28,6 @@ class CourseService(
                     .buildCourseResponse()
         }
 
-
     override fun updateCourse(courseRequest: CourseRequest, id: UUID): CourseResponse =
         findCourseByIdOrThrowException(id).also {
             courseRepository.save(
