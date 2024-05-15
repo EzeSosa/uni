@@ -11,7 +11,11 @@ import java.util.UUID
 interface IUserController {
     @GetMapping("/{id}/inscriptions")
     @ResponseStatus(OK)
-    fun getUserInscriptions(@PathVariable id: UUID): List<InscriptionResponse>
+    fun getUserInscriptions(
+        @PathVariable id: UUID,
+        @RequestParam dateFrom: LocalDate?,
+        @RequestParam dateTo: LocalDate?
+    ): List<InscriptionResponse>
 
     @GetMapping("/{id}/exams")
     @ResponseStatus(OK)

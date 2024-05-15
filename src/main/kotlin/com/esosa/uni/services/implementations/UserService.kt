@@ -20,9 +20,9 @@ class UserService (
     private val inscriptionService: IInscriptionService
 ) : IUserService {
 
-    override fun getUserInscriptions(id: UUID): List<InscriptionResponse> =
+    override fun getUserInscriptions(id: UUID, dateFrom: LocalDate?, dateTo: LocalDate?): List<InscriptionResponse> =
         findUserByIdOrThrowException(id).let {
-            inscriptionService.findUserInscriptions(it)
+            inscriptionService.findUserInscriptions(it, dateFrom, dateTo)
                 .map { inscription ->
                     inscription.buildInscriptionResponse()
                 }

@@ -11,7 +11,7 @@ import java.util.UUID
 interface IExamService {
     fun createExam(examRequest: ExamRequest): ExamResponse
     fun updateExam(updateExamRequest: UpdateExamRequest, id: UUID): ExamResponse
-    fun deleteExam(id: UUID)
+    fun deleteExam(id: UUID): Unit
     fun findExamByIdOrThrowException(id: UUID): Exam
     fun findInscriptionExams(
         inscription: Inscription,

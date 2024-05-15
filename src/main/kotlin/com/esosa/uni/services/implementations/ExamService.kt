@@ -25,8 +25,7 @@ class ExamService(
             inscriptionService.findInscriptionByIdOrThrowException(inscriptionId).let {
                 examRepository.save(
                     createExam(it)
-                )
-                    .buildExamResponse()
+                ).buildExamResponse()
             }
         }
 
@@ -38,18 +37,16 @@ class ExamService(
                     it.grade = updateExamRequest.grade
                 }
             )
-        }
-            .buildExamResponse()
+        }.buildExamResponse()
 
     override fun deleteExam(id: UUID) =
-        if (examRepository.existsById(id))
+        findExamByIdOrThrowException(id).run {
             examRepository.deleteById(id)
-        else
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Exam not found")
+        }
 
     override fun findExamByIdOrThrowException(id: UUID): Exam =
         examRepository.findById(id)
-            .orElseThrow { ResponseStatusException(HttpStatus.BAD_REQUEST, "Course not found") }
+            .orElseThrow { ResponseStatusException(HttpStatus.BAD_REQUEST, "Exam not found") }
 
     override fun findInscriptionExams(
         inscription: Inscription,

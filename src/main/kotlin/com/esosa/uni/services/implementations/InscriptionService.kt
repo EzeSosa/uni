@@ -33,22 +33,24 @@ class InscriptionService(
 
             inscriptionRepository.save(
                 createInscription(course, user)
-            )
-                .buildInscriptionResponse()
+            ).buildInscriptionResponse()
         }
 
     override fun deleteInscription(id: UUID) =
-        if (inscriptionRepository.existsById(id))
+        findInscriptionByIdOrThrowException(id).run {
             inscriptionRepository.deleteById(id)
-        else
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Inscription not found")
+        }
 
     override fun findInscriptionByIdOrThrowException(id: UUID): Inscription =
         inscriptionRepository.findById(id)
             .orElseThrow { ResponseStatusException(HttpStatus.BAD_REQUEST, "Inscription not found") }
 
-    override fun findUserInscriptions(user: User): List<Inscription> =
-        inscriptionRepository.findByUser(user)
+    override fun findUserInscriptions(
+        user: User,
+        dateFrom: LocalDate?,
+        dateTo: LocalDate?
+    ): List<Inscription> =
+        inscriptionRepository.findByUser(user, dateFrom, dateTo)
 
     override fun findUserExams(
         user: User,

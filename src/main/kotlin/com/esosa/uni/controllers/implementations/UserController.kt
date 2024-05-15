@@ -12,8 +12,12 @@ import java.util.*
 
 @RestController
 class UserController (private val userService: IUserService) : IUserController {
-    override fun getUserInscriptions(@PathVariable id: UUID): List<InscriptionResponse> =
-        userService.getUserInscriptions(id)
+    override fun getUserInscriptions(
+        @PathVariable id: UUID,
+        @RequestParam dateFrom: LocalDate?,
+        @RequestParam dateTo: LocalDate?
+    ): List<InscriptionResponse> =
+        userService.getUserInscriptions(id, dateFrom, dateTo)
 
     override fun getUserExams(
         @PathVariable id: UUID,

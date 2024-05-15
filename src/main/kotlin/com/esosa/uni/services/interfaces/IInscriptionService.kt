@@ -6,12 +6,22 @@ import com.esosa.uni.data.models.Exam
 import com.esosa.uni.data.models.Inscription
 import com.esosa.uni.data.models.User
 import java.time.LocalDate
-import java.util.*
+import java.util.UUID
 
 interface IInscriptionService {
     fun createInscription(inscriptionRequest: InscriptionRequest): InscriptionResponse
     fun deleteInscription(id: UUID)
     fun findInscriptionByIdOrThrowException(id: UUID): Inscription
-    fun findUserInscriptions(user: User): List<Inscription>
-    fun findUserExams(user: User, dateFrom: LocalDate?, dateTo: LocalDate?, minGrade: Double?, maxGrade: Double?): List<Exam>
+    fun findUserInscriptions(
+        user: User,
+        dateFrom: LocalDate? = null,
+        dateTo: LocalDate? = null
+    ): List<Inscription>
+    fun findUserExams(
+        user: User,
+        dateFrom: LocalDate? = null,
+        dateTo: LocalDate? = null,
+        minGrade: Double? = null,
+        maxGrade: Double? = null
+    ): List<Exam>
 }
