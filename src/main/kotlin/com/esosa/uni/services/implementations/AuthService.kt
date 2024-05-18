@@ -36,6 +36,7 @@ class AuthService(
     override fun register(registerRequest: RegisterRequest): Unit =
         with(registerRequest) {
             validateExistsUsername(username)
+            validateExistsEmail(email)
             userRepository.save(
                 createUser()
             )
@@ -90,6 +91,12 @@ class AuthService(
             throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already exists")
     }
 
+
+    private fun validateExistsEmail(email: String) {
+        if (userRepository.existsByEmail(email))
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already exists")
+    }
+
     private fun RegisterRequest.createUser() =
-        User(username, encoder.encode(password), name)
+        User(username, encoder.encode(password), name, email)
 }
