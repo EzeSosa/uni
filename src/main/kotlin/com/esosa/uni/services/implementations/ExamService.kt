@@ -5,6 +5,7 @@ import com.esosa.uni.controllers.requests.UpdateExamRequest
 import com.esosa.uni.controllers.responses.ExamResponse
 import com.esosa.uni.data.models.Exam
 import com.esosa.uni.data.models.Inscription
+import com.esosa.uni.data.models.User
 import com.esosa.uni.data.repositories.IExamRepository
 import com.esosa.uni.services.interfaces.IExamService
 import com.esosa.uni.services.interfaces.IInscriptionService
@@ -48,14 +49,14 @@ class ExamService(
         examRepository.findById(id)
             .orElseThrow { ResponseStatusException(HttpStatus.BAD_REQUEST, "Exam not found") }
 
-    override fun findInscriptionExams(
-        inscription: Inscription,
+    override fun findUserExams(
+        user: User,
         dateFrom: LocalDate?,
         dateTo: LocalDate?,
         minGrade: Double?,
         maxGrade: Double?
     ): List<Exam> =
-        examRepository.findByInscription(inscription, dateFrom, dateTo, minGrade, maxGrade)
+        examRepository.findByUser(user, dateFrom, dateTo, minGrade, maxGrade)
 
     fun ExamRequest.createExam(inscription: Inscription) =
         Exam(date, grade, inscription)

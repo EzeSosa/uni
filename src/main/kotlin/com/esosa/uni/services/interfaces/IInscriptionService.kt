@@ -17,11 +17,4 @@ interface IInscriptionService {
         dateFrom: LocalDate? = null,
         dateTo: LocalDate? = null
     ): List<Inscription>
-    fun findUserExams(
-        user: User,
-        dateFrom: LocalDate? = null,
-        dateTo: LocalDate? = null,
-        minGrade: Double? = null,
-        maxGrade: Double? = null
-    ): List<Exam>
 }

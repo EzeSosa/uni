@@ -52,16 +52,6 @@ class InscriptionService(
     ): List<Inscription> =
         inscriptionRepository.findByUser(user, dateFrom, dateTo)
 
-    override fun findUserExams(
-        user: User,
-        dateFrom: LocalDate?,
-        dateTo: LocalDate?,
-        minGrade: Double?,
-        maxGrade: Double?
-    ): List<Exam> =
-        findUserInscriptions(user)
-            .flatMap { examService.findInscriptionExams(it, dateFrom, dateTo, minGrade, maxGrade) }
-
     private fun Inscription.buildInscriptionResponse() =
         InscriptionResponse(id, date, course.name)
 

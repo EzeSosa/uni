@@ -6,6 +6,7 @@ import com.esosa.uni.data.models.Exam
 import com.esosa.uni.data.models.Inscription
 import com.esosa.uni.data.models.User
 import com.esosa.uni.data.repositories.IUserRepository
+import com.esosa.uni.services.interfaces.IExamService
 import com.esosa.uni.services.interfaces.IInscriptionService
 import com.esosa.uni.services.interfaces.IUserService
 import org.springframework.http.HttpStatus
@@ -17,7 +18,8 @@ import java.util.*
 @Service
 class UserService (
     private val userRepository: IUserRepository,
-    private val inscriptionService: IInscriptionService
+    private val inscriptionService: IInscriptionService,
+    private val examService: IExamService
 ) : IUserService {
 
     override fun getUserInscriptions(id: UUID, dateFrom: LocalDate?, dateTo: LocalDate?): List<InscriptionResponse> =
@@ -30,7 +32,7 @@ class UserService (
 
     override fun getUserExams(id: UUID, dateFrom: LocalDate?, dateTo: LocalDate?, minGrade: Double?, maxGrade: Double?): List<ExamResponse> =
         findUserByIdOrThrowException(id).let {
-            inscriptionService.findUserExams(it, dateFrom, dateTo, minGrade, maxGrade)
+            examService.findUserExams(it, dateFrom, dateTo, minGrade, maxGrade)
                 .map { exam ->
                     exam.buildExamResponse()
                 }
