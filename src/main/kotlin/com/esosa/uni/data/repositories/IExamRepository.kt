@@ -11,7 +11,7 @@ import java.util.UUID
 
 @Repository
 interface IExamRepository : JpaRepository<Exam, UUID> {
-    @Query("SELECT e from Exam e JOIN Inscription i WHERE " +
+    @Query("SELECT e from Exam e JOIN e.inscription i WHERE " +
             "i.user = ?1 " +
             "AND (?2 is null or e.date >= ?2) " +
             "AND (?3 is null or e.date <= ?3) " +

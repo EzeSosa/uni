@@ -27,6 +27,7 @@ dependencies {
 	implementation("org.hibernate:hibernate-validator:8.0.0.Final")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("io.jsonwebtoken:jjwt-api:0.12.5")
+	implementation("org.springframework.boot:spring-boot-starter-mail:3.2.5")
 
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 
