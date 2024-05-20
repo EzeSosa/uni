@@ -1,7 +1,6 @@
 package com.esosa.uni.data.repositories
 
 import com.esosa.uni.data.models.Exam
-import com.esosa.uni.data.models.Inscription
 import com.esosa.uni.data.models.User
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query

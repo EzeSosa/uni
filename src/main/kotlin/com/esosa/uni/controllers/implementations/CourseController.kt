@@ -5,7 +5,7 @@ import com.esosa.uni.controllers.requests.CourseRequest
 import com.esosa.uni.controllers.responses.CourseResponse
 import com.esosa.uni.services.interfaces.ICourseService
 import org.springframework.web.bind.annotation.RestController
-import java.util.*
+import java.util.UUID
 
 @RestController
 class CourseController (private val courseService: ICourseService) : ICourseController {

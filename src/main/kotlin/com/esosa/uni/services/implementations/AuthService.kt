@@ -19,7 +19,8 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
-import java.util.*
+import java.util.UUID
+import java.util.Date
 
 @Service
 class AuthService(

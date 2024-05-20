@@ -1,6 +1,10 @@
 package com.esosa.uni.data.models
 
-import jakarta.persistence.*
+import jakarta.persistence.Entity
+import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
+import jakarta.persistence.Id
+import jakarta.persistence.CascadeType
 import java.time.LocalDate
 import java.util.UUID
 

@@ -8,7 +8,7 @@ import com.esosa.uni.services.interfaces.ICourseService
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
-import java.util.*
+import java.util.UUID
 
 @Service
 class CourseService(

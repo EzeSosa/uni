@@ -2,7 +2,6 @@ package com.esosa.uni.services.interfaces
 
 import com.esosa.uni.controllers.requests.InscriptionRequest
 import com.esosa.uni.controllers.responses.InscriptionResponse
-import com.esosa.uni.data.models.Exam
 import com.esosa.uni.data.models.Inscription
 import com.esosa.uni.data.models.User
 import java.time.LocalDate

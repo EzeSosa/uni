@@ -4,7 +4,9 @@ import com.esosa.uni.data.enums.Role
 import com.esosa.uni.security.filter.JwtAuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod.*
+import org.springframework.http.HttpMethod.POST
+import org.springframework.http.HttpMethod.PATCH
+import org.springframework.http.HttpMethod.DELETE
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity

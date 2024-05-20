@@ -6,7 +6,7 @@ import com.esosa.uni.controllers.requests.RegisterRequest
 import com.esosa.uni.controllers.responses.AuthResponse
 import com.esosa.uni.controllers.responses.RefreshTokenResponse
 import jakarta.validation.Valid
-import org.springframework.http.HttpStatus.*
+import org.springframework.http.HttpStatus.CREATED
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping

@@ -4,7 +4,9 @@ import com.esosa.uni.controllers.requests.ExamRequest
 import com.esosa.uni.controllers.requests.UpdateExamRequest
 import com.esosa.uni.controllers.responses.ExamResponse
 import jakarta.validation.Valid
-import org.springframework.http.HttpStatus.*
+import org.springframework.http.HttpStatus.CREATED
+import org.springframework.http.HttpStatus.OK
+import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable

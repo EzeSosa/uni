@@ -3,7 +3,8 @@ package com.esosa.uni.controllers.interfaces
 import com.esosa.uni.controllers.requests.InscriptionRequest
 import com.esosa.uni.controllers.responses.InscriptionResponse
 import jakarta.validation.Valid
-import org.springframework.http.HttpStatus.*
+import org.springframework.http.HttpStatus.CREATED
+import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping

@@ -3,7 +3,6 @@ package com.esosa.uni.services.implementations
 import com.esosa.uni.controllers.requests.InscriptionRequest
 import com.esosa.uni.controllers.responses.InscriptionResponse
 import com.esosa.uni.data.models.Course
-import com.esosa.uni.data.models.Exam
 import com.esosa.uni.data.models.Inscription
 import com.esosa.uni.data.models.User
 import com.esosa.uni.data.repositories.IInscriptionRepository
@@ -16,14 +15,13 @@ import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
 import java.time.LocalDate
-import java.util.*
+import java.util.UUID
 
 @Service
 class InscriptionService(
     private val inscriptionRepository: IInscriptionRepository,
     private val courseService: ICourseService,
-    @Lazy private val userService: IUserService,
-    @Lazy private val examService: IExamService
+    @Lazy private val userService: IUserService
 ) : IInscriptionService {
 
     override fun createInscription(inscriptionRequest: InscriptionRequest): InscriptionResponse =

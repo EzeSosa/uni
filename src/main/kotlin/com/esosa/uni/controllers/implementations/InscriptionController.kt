@@ -5,7 +5,7 @@ import com.esosa.uni.controllers.requests.InscriptionRequest
 import com.esosa.uni.controllers.responses.InscriptionResponse
 import com.esosa.uni.services.interfaces.IInscriptionService
 import org.springframework.web.bind.annotation.RestController
-import java.util.*
+import java.util.UUID
 
 @RestController
 class InscriptionController (private val inscriptionService: IInscriptionService) : IInscriptionController {

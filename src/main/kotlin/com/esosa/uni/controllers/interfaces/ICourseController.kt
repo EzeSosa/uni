@@ -3,7 +3,9 @@ package com.esosa.uni.controllers.interfaces
 import com.esosa.uni.controllers.requests.CourseRequest
 import com.esosa.uni.controllers.responses.CourseResponse
 import jakarta.validation.Valid
-import org.springframework.http.HttpStatus.*
+import org.springframework.http.HttpStatus.CREATED
+import org.springframework.http.HttpStatus.OK
+import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
