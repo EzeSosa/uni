@@ -4,6 +4,16 @@ spring:
     hibernate:
       ddl-auto: ${DDL_AUTO}
 
+  cache:
+    type: redis
+    redis:
+      time-to-live: 60000
+      cache-null-values: false
+
+  redis:
+    host: 172.28.48.1
+    port: 6379
+
   datasource:
     url: ${DATASOURCE_URL}
     username: ${DB_USERNAME}
