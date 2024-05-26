@@ -12,9 +12,7 @@ import com.esosa.uni.security.jwt.JWTService
 import com.esosa.uni.security.repositories.RefreshTokenRepository
 import com.esosa.uni.security.services.CustomUserDetailsService
 import com.esosa.uni.services.interfaces.IAuthService
-import com.esosa.uni.verification.email.EmailSender
 import com.esosa.uni.verification.services.ConfirmationTokenService
-import com.esosa.uni.verification.token.ConfirmationToken
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -22,7 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
-import java.time.LocalDateTime
 import java.util.UUID
 import java.util.Date
 
@@ -36,17 +33,16 @@ class AuthService(
     private val encoder: PasswordEncoder,
     private val userService: UserService,
     private val refreshTokenRepository: RefreshTokenRepository,
-    private val confirmationTokenService: ConfirmationTokenService,
-    private val emailSender: EmailSender
+    private val confirmationTokenService: ConfirmationTokenService
 ) : IAuthService {
 
     override fun register(registerRequest: RegisterRequest): Unit =
         with(registerRequest) {
             validateExistsUsername(username)
             validateExistsEmail(email)
-            userRepository.save(createUser())
-            confirmationTokenService.saveConfirmationToken(generateConfirmationToken())
-                .sendConfirmationTokenEmail()
+            userRepository.save(createUser()).also { user ->
+                confirmationTokenService.generateConfirmationToken(user)
+            }
         }
 
     override fun login(loginRequest: LoginRequest): AuthResponse =
@@ -77,12 +73,9 @@ class AuthService(
             }
         }
 
-    override fun enableUser(token: String): Unit =
-        confirmationTokenService.saveConfirmationToken(
-            confirmationTokenService.getToken(token)
-                .validateToken()
-                .apply { confirmedAt = LocalDateTime.now() }
-        ).enableUserFromConfirmationToken()
+    override fun enableUser(token: String) {
+        confirmationTokenService.enableUserFromToken(token)
+    }
 
     private fun String.buildRefreshTokenResponse(userId: UUID): RefreshTokenResponse =
         RefreshTokenResponse(userId, this)
@@ -116,37 +109,9 @@ class AuthService(
     private fun RegisterRequest.createUser() =
         User(username, encoder.encode(password), email, name)
 
-    private fun RegisterRequest.generateConfirmationToken() =
-        ConfirmationToken(
-            UUID.randomUUID().toString(),
-            LocalDateTime.now(),
-            LocalDateTime.now().plusMinutes(15),
-            userService.findUserByUsernameOrThrowException(username)
-        )
-
     private fun LoginRequest.validateUserEnabled() =
         userService.findUserByUsernameOrThrowException(username).also { user ->
             if (!user.enabled)
-                throw ResponseStatusException(HttpStatus.BAD_REQUEST, "User token not confirmed")
+                throw ResponseStatusException(HttpStatus.BAD_REQUEST, "User not enabled")
         }
-
-    private fun ConfirmationToken.validateToken(): ConfirmationToken {
-        if (confirmedAt != null)
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "User token already confirmed")
-
-        if (expiredAt.isBefore(LocalDateTime.now()))
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "User token expired")
-
-        return this
-    }
-
-    private fun ConfirmationToken.enableUserFromConfirmationToken() =
-        userService.enableUser(user)
-
-    private fun ConfirmationToken.sendConfirmationTokenEmail() =
-        emailSender.sendEmail(
-            user.email,
-            "Confirm User",
-            "To enable your user, access to the following link: http://localhost:8080/auth/enable?token=$token"
-        )
 }
