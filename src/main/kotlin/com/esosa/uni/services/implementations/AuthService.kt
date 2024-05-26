@@ -147,6 +147,6 @@ class AuthService(
         emailSender.sendEmail(
             user.email,
             "Confirm User",
-            "Access to the following link: http://localhost:8080/enable?token=$token"
+            "To enable your user, access to the following link: http://localhost:8080/auth/enable?token=$token"
         )
 }
