@@ -12,8 +12,7 @@ import com.esosa.uni.security.jwt.JWTService
 import com.esosa.uni.security.repositories.RefreshTokenRepository
 import com.esosa.uni.security.services.CustomUserDetailsService
 import com.esosa.uni.services.interfaces.IAuthService
-import com.esosa.uni.verification.requests.ConfirmationTokenRequest
-import com.esosa.uni.verification.responses.ConfirmationTokenResponse
+import com.esosa.uni.verification.email.EmailSender
 import com.esosa.uni.verification.services.ConfirmationTokenService
 import com.esosa.uni.verification.token.ConfirmationToken
 import org.springframework.http.HttpStatus
@@ -38,15 +37,16 @@ class AuthService(
     private val userService: UserService,
     private val refreshTokenRepository: RefreshTokenRepository,
     private val confirmationTokenService: ConfirmationTokenService,
+    private val emailSender: EmailSender
 ) : IAuthService {
 
-    override fun register(registerRequest: RegisterRequest): ConfirmationTokenResponse =
+    override fun register(registerRequest: RegisterRequest): Unit =
         with(registerRequest) {
             validateExistsUsername(username)
             validateExistsEmail(email)
             userRepository.save(createUser())
             confirmationTokenService.saveConfirmationToken(generateConfirmationToken())
-                .buildConfirmationTokenResponse()
+                .sendConfirmationTokenEmail()
         }
 
     override fun login(loginRequest: LoginRequest): AuthResponse =
@@ -77,14 +77,12 @@ class AuthService(
             }
         }
 
-    override fun enableUser(confirmationTokenRequest: ConfirmationTokenRequest): Unit =
-        with(confirmationTokenRequest) {
-            confirmationTokenService.saveConfirmationToken(
-                confirmationTokenService.getToken(token)
-                    .validateToken()
-                    .apply { confirmedAt = LocalDateTime.now() }
-            ).enableUserFromConfirmationToken()
-        }
+    override fun enableUser(token: String): Unit =
+        confirmationTokenService.saveConfirmationToken(
+            confirmationTokenService.getToken(token)
+                .validateToken()
+                .apply { confirmedAt = LocalDateTime.now() }
+        ).enableUserFromConfirmationToken()
 
     private fun String.buildRefreshTokenResponse(userId: UUID): RefreshTokenResponse =
         RefreshTokenResponse(userId, this)
@@ -116,7 +114,7 @@ class AuthService(
     }
 
     private fun RegisterRequest.createUser() =
-        User(username, encoder.encode(password), name, email)
+        User(username, encoder.encode(password), email, name)
 
     private fun RegisterRequest.generateConfirmationToken() =
         ConfirmationToken(
@@ -145,6 +143,10 @@ class AuthService(
     private fun ConfirmationToken.enableUserFromConfirmationToken() =
         userService.enableUser(user)
 
-    private fun ConfirmationToken.buildConfirmationTokenResponse(): ConfirmationTokenResponse =
-        ConfirmationTokenResponse(token, expiredAt)
+    private fun ConfirmationToken.sendConfirmationTokenEmail() =
+        emailSender.sendEmail(
+            user.email,
+            "Confirm User",
+            "Access to the following link: http://localhost:8080/enable?token=$token"
+        )
 }
