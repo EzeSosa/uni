@@ -46,6 +46,10 @@ class UserService (
         userRepository.findByUsername(username)
             ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found")
 
+    override fun enableUser(user: User) {
+        userRepository.save(user.apply { enabled = true })
+    }
+
     private fun Inscription.buildInscriptionResponse() =
         InscriptionResponse(id, date, course.name)
 

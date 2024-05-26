@@ -21,4 +21,5 @@ interface IUserService {
     ): List<ExamResponse>
     fun findUserByIdOrThrowException(id: UUID): User
     fun findUserByUsernameOrThrowException(username: String): User
+    fun enableUser(user: User)
 }

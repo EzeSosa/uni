@@ -14,12 +14,10 @@ data class User(
     val email: String,
     val name: String,
     val role: Role = Role.USER,
+    var enabled: Boolean = false,
 
     @OneToMany(mappedBy = "user")
     val inscriptions: List<Inscription> = emptyList(),
-
-    @OneToMany(mappedBy = "user")
-    val confirmationTokens: List<ConfirmationToken> = emptyList(),
 
     @Id
     val id: UUID = UUID.randomUUID()

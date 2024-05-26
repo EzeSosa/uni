@@ -51,7 +51,7 @@ class AuthService(
 
     override fun login(loginRequest: LoginRequest): AuthResponse =
         with(loginRequest) {
-            validateConfirmationToken()
+            validateUserEnabled()
 
             authManager.authenticate(UsernamePasswordAuthenticationToken(username, password))
 
@@ -83,7 +83,7 @@ class AuthService(
                 confirmationTokenService.getToken(token)
                     .validateToken()
                     .apply { confirmedAt = LocalDateTime.now() }
-            )
+            ).enableUserFromConfirmationToken()
         }
 
     private fun String.buildRefreshTokenResponse(userId: UUID): RefreshTokenResponse =
@@ -126,9 +126,9 @@ class AuthService(
             userService.findUserByUsernameOrThrowException(username)
         )
 
-    private fun LoginRequest.validateConfirmationToken() =
+    private fun LoginRequest.validateUserEnabled() =
         userService.findUserByUsernameOrThrowException(username).also { user ->
-            if (user.confirmationTokens[0].confirmedAt == null)
+            if (!user.enabled)
                 throw ResponseStatusException(HttpStatus.BAD_REQUEST, "User token not confirmed")
         }
 
@@ -141,6 +141,9 @@ class AuthService(
 
         return this
     }
+
+    private fun ConfirmationToken.enableUserFromConfirmationToken() =
+        userService.enableUser(user)
 
     private fun ConfirmationToken.buildConfirmationTokenResponse(): ConfirmationTokenResponse =
         ConfirmationTokenResponse(token, expiredAt)
