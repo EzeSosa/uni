@@ -3,7 +3,7 @@ package com.esosa.uni.reports
 import com.esosa.uni.controllers.responses.ExamResponse
 import com.esosa.uni.data.models.User
 import com.esosa.uni.data.repositories.IUserRepository
-import com.esosa.uni.reports.email.EmailService
+import com.esosa.uni.email.EmailService
 import com.esosa.uni.services.interfaces.IUserService
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.Async

@@ -1,4 +1,4 @@
-package com.esosa.uni.reports.email
+package com.esosa.uni.email
 
 import jakarta.mail.internet.MimeMessage
 import org.springframework.mail.javamail.JavaMailSender

@@ -1,8 +1,8 @@
 package com.esosa.uni.verification.services
 
 import com.esosa.uni.data.models.User
+import com.esosa.uni.email.EmailService
 import com.esosa.uni.services.interfaces.IUserService
-import com.esosa.uni.verification.email.EmailSender
 import com.esosa.uni.verification.repositories.IConfirmationTokenRepository
 import com.esosa.uni.verification.token.ConfirmationToken
 import org.springframework.http.HttpStatus
@@ -15,7 +15,7 @@ import java.util.UUID
 class ConfirmationTokenService (
     private val confirmationTokenRepository: IConfirmationTokenRepository,
     private val userService: IUserService,
-    private val emailSender: EmailSender
+    private val emailService: EmailService
 ) {
 
     fun saveConfirmationToken(token: ConfirmationToken): ConfirmationToken =
@@ -44,7 +44,7 @@ class ConfirmationTokenService (
         ).also { confirmationToken -> userService.enableUser(confirmationToken.user) }
 
     private fun ConfirmationToken.sendConfirmationTokenEmail() =
-        emailSender.sendEmail(
+        emailService.sendEmail(
             user.email,
             "Confirm User",
             "To enable your user, access to the following link: http://localhost:8080/auth/enable?token=$token"
