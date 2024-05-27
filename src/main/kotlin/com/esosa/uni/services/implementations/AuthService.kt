@@ -12,6 +12,7 @@ import com.esosa.uni.security.jwt.JWTService
 import com.esosa.uni.security.repositories.RefreshTokenRepository
 import com.esosa.uni.security.services.CustomUserDetailsService
 import com.esosa.uni.services.interfaces.IAuthService
+import com.esosa.uni.verification.services.ConfirmationTokenService
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -31,20 +32,23 @@ class AuthService(
     private val userRepository: IUserRepository,
     private val encoder: PasswordEncoder,
     private val userService: UserService,
-    private val refreshTokenRepository: RefreshTokenRepository
+    private val refreshTokenRepository: RefreshTokenRepository,
+    private val confirmationTokenService: ConfirmationTokenService
 ) : IAuthService {
 
     override fun register(registerRequest: RegisterRequest): Unit =
         with(registerRequest) {
             validateExistsUsername(username)
             validateExistsEmail(email)
-            userRepository.save(
-                createUser()
-            )
+            userRepository.save(createUser()).also { user ->
+                confirmationTokenService.generateConfirmationToken(user)
+            }
         }
 
     override fun login(loginRequest: LoginRequest): AuthResponse =
         with(loginRequest) {
+            validateUserEnabled()
+
             authManager.authenticate(UsernamePasswordAuthenticationToken(username, password))
 
             val user = userDetailsService.loadUserByUsername(username)
@@ -68,6 +72,10 @@ class AuthService(
                 else null
             }
         }
+
+    override fun enableUser(token: String) {
+        confirmationTokenService.enableUserFromToken(token)
+    }
 
     private fun String.buildRefreshTokenResponse(userId: UUID): RefreshTokenResponse =
         RefreshTokenResponse(userId, this)
@@ -100,4 +108,10 @@ class AuthService(
 
     private fun RegisterRequest.createUser() =
         User(username, encoder.encode(password), email, name)
+
+    private fun LoginRequest.validateUserEnabled() =
+        userService.findUserByUsernameOrThrowException(username).also { user ->
+            if (!user.enabled)
+                throw ResponseStatusException(HttpStatus.BAD_REQUEST, "User not enabled")
+        }
 }
