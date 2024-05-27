@@ -23,19 +23,19 @@ class ExamService(
 
     override fun createExam(examRequest: ExamRequest): ExamResponse =
         with(examRequest) {
-            inscriptionService.findInscriptionByIdOrThrowException(inscriptionId).let {
+            inscriptionService.findInscriptionByIdOrThrowException(inscriptionId).let { inscription ->
                 examRepository.save(
-                    createExam(it)
+                    createExam(inscription)
                 ).buildExamResponse()
             }
         }
 
     override fun updateExam(updateExamRequest: UpdateExamRequest, id: UUID): ExamResponse =
-        findExamByIdOrThrowException(id).also {
+        findExamByIdOrThrowException(id).also { exam ->
             examRepository.save(
-                it.apply {
-                    it.date = updateExamRequest.date
-                    it.grade = updateExamRequest.grade
+                exam.apply {
+                    date = updateExamRequest.date
+                    grade = updateExamRequest.grade
                 }
             )
         }.buildExamResponse()

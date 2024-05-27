@@ -17,7 +17,7 @@ class CourseService(
 
     override fun getCourses(): List<CourseResponse> =
         courseRepository.findAll()
-            .map { it.buildCourseResponse() }
+            .map { course -> course.buildCourseResponse() }
 
     override fun createCourse(courseRequest: CourseRequest): CourseResponse =
         with(courseRequest) {
@@ -29,11 +29,11 @@ class CourseService(
         }
 
     override fun updateCourse(courseRequest: CourseRequest, id: UUID): CourseResponse =
-        findCourseByIdOrThrowException(id).also {
+        findCourseByIdOrThrowException(id).also { course ->
             courseRepository.save(
-                it.apply {
-                    it.name = courseRequest.name
-                    it.year = courseRequest.year
+                course.apply {
+                    name = courseRequest.name
+                    year = courseRequest.year
                 }
             )
         }.buildCourseResponse()
