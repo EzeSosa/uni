@@ -99,5 +99,5 @@ class AuthService(
     }
 
     private fun RegisterRequest.createUser() =
-        User(username, encoder.encode(password), name, email)
+        User(username, encoder.encode(password), email, name)
 }
