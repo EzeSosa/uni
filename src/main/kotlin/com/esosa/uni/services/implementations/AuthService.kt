@@ -12,7 +12,7 @@ import com.esosa.uni.security.jwt.JWTService
 import com.esosa.uni.security.repositories.RefreshTokenRepository
 import com.esosa.uni.security.services.CustomUserDetailsService
 import com.esosa.uni.services.interfaces.IAuthService
-import com.esosa.uni.verification.services.ConfirmationTokenService
+import com.esosa.uni.verification.services.ConfirmationService
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -33,7 +33,7 @@ class AuthService(
     private val encoder: PasswordEncoder,
     private val userService: UserService,
     private val refreshTokenRepository: RefreshTokenRepository,
-    private val confirmationTokenService: ConfirmationTokenService
+    private val confirmationService: ConfirmationService
 ) : IAuthService {
 
     override fun register(registerRequest: RegisterRequest): Unit =
@@ -41,7 +41,7 @@ class AuthService(
             validateExistsUsername(username)
             validateExistsEmail(email)
             userRepository.save(createUser()).also { user ->
-                confirmationTokenService.generateConfirmationToken(user)
+                confirmationService.generateConfirmationToken(user)
             }
         }
 
@@ -74,7 +74,7 @@ class AuthService(
         }
 
     override fun enableUser(token: String) {
-        confirmationTokenService.enableUserFromToken(token)
+        confirmationService.enableUserFromToken(token)
     }
 
     private fun String.buildRefreshTokenResponse(userId: UUID): RefreshTokenResponse =

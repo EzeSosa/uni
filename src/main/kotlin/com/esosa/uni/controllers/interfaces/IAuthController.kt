@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus.CREATED
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 
 @RequestMapping("/auth")
@@ -26,8 +25,4 @@ interface IAuthController {
     @PostMapping("/refresh")
     @ResponseStatus(CREATED)
     fun refresh(@RequestBody @Valid refreshTokenRequest: RefreshTokenRequest): RefreshTokenResponse?
-
-    @PostMapping("/enable")
-    @ResponseStatus(CREATED)
-    fun enableUser(@RequestParam token: String)
 }

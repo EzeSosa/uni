@@ -19,7 +19,4 @@ class AuthController(private val authService: IAuthService) : IAuthController {
 
     override fun refresh(refreshTokenRequest: RefreshTokenRequest): RefreshTokenResponse? =
         authService.refresh(refreshTokenRequest)
-
-    override fun enableUser(token: String) =
-        authService.enableUser(token)
 }

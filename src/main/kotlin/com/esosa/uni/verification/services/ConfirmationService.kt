@@ -12,20 +12,20 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 @Service
-class ConfirmationTokenService (
+class ConfirmationService (
     private val confirmationTokenRepository: IConfirmationTokenRepository,
     private val userService: IUserService,
     private val emailService: EmailService
-) {
+): IConfirmationService {
 
-    fun saveConfirmationToken(token: ConfirmationToken): ConfirmationToken =
+    override fun saveConfirmationToken(token: ConfirmationToken): ConfirmationToken =
         confirmationTokenRepository.save(token)
 
-    fun getToken(token: String): ConfirmationToken =
+    override fun getToken(token: String): ConfirmationToken =
         confirmationTokenRepository.findByToken(token)
             ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Confirmation token does not exists")
 
-    fun generateConfirmationToken(user: User) =
+    override fun generateConfirmationToken(user: User) =
         ConfirmationToken(
             UUID.randomUUID().toString(),
             LocalDateTime.now(),
@@ -36,7 +36,7 @@ class ConfirmationTokenService (
             confirmationToken.sendConfirmationTokenEmail()
         }
 
-    fun enableUserFromToken(token: String): ConfirmationToken =
+    override fun enableUserFromToken(token: String): ConfirmationToken =
         saveConfirmationToken(
             getToken(token)
                 .validateToken()
@@ -47,7 +47,7 @@ class ConfirmationTokenService (
         emailService.sendEmail(
             user.email,
             "Confirm User",
-            "To enable your user, access to the following link: http://localhost:8080/auth/enable?token=$token"
+            "To enable your user, access to the following link: http://localhost:8080/confirm?token=$token"
         )
 
     private fun ConfirmationToken.validateToken(): ConfirmationToken {

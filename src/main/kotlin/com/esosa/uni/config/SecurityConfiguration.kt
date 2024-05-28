@@ -29,7 +29,7 @@ class SecurityConfiguration(
             .csrf { it.disable() }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/auth/**", "/error").permitAll()
+                    .requestMatchers("/auth/**", "/confirm", "/error").permitAll()
                     .requestMatchers(POST, "/courses").hasRole(Role.ADMIN.name)
                     .requestMatchers(PATCH, "/courses/**").hasRole(Role.ADMIN.name)
                     .requestMatchers(DELETE, "/courses/**").hasRole(Role.ADMIN.name)
