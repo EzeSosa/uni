@@ -8,7 +8,10 @@ class ConfirmationController(
     private val confirmationService: IConfirmationService
 ) : IConfirmationController {
 
-    override fun confirm(token: String): Unit {
+    override fun confirm(token: String) {
         confirmationService.enableUserFromToken(token)
     }
+
+    override fun resend(username: String) =
+        confirmationService.resendConfirmationToken(username)
 }

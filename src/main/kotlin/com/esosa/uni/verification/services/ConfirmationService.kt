@@ -21,7 +21,7 @@ class ConfirmationService (
     override fun saveConfirmationToken(token: ConfirmationToken): ConfirmationToken =
         confirmationTokenRepository.save(token)
 
-    override fun getToken(token: String): ConfirmationToken =
+    override fun getToken(token: String) =
         confirmationTokenRepository.findByToken(token)
             ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Confirmation token does not exists")
 
@@ -42,6 +42,14 @@ class ConfirmationService (
                 .validateToken()
                 .apply { confirmedAt = LocalDateTime.now() }
         ).also { confirmationToken -> userService.enableUser(confirmationToken.user) }
+
+    override fun resendConfirmationToken(username: String) {
+        userService.findUserByUsernameOrThrowException(username).also { user ->
+            if (user.enabled)
+                throw ResponseStatusException(HttpStatus.BAD_REQUEST, "User token already confirmed")
+            generateConfirmationToken(user)
+        }
+    }
 
     private fun ConfirmationToken.sendConfirmationTokenEmail() =
         emailService.sendEmail(

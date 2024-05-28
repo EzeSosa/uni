@@ -8,4 +8,5 @@ interface IConfirmationService {
     fun getToken(token: String): ConfirmationToken
     fun generateConfirmationToken(user: User): ConfirmationToken
     fun enableUserFromToken(token: String): ConfirmationToken
+    fun resendConfirmationToken(username: String)
 }

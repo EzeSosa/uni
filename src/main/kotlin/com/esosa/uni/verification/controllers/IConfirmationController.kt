@@ -13,4 +13,8 @@ interface IConfirmationController {
     @PostMapping
     @ResponseStatus(CREATED)
     fun confirm(@RequestParam @NotNull token: String)
+
+    @PostMapping("/resend")
+    @ResponseStatus(CREATED)
+    fun resend(@RequestParam @NotNull username: String)
 }
