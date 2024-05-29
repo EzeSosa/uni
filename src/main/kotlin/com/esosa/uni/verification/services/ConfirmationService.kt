@@ -3,8 +3,8 @@ package com.esosa.uni.verification.services
 import com.esosa.uni.data.models.User
 import com.esosa.uni.email.EmailService
 import com.esosa.uni.services.interfaces.IUserService
-import com.esosa.uni.verification.repositories.IConfirmationTokenRepository
-import com.esosa.uni.verification.token.ConfirmationToken
+import com.esosa.uni.verification.repositories.ConfirmationRepository
+import com.esosa.uni.verification.token.Confirmation
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
@@ -13,63 +13,64 @@ import java.util.UUID
 
 @Service
 class ConfirmationService (
-    private val confirmationTokenRepository: IConfirmationTokenRepository,
+    private val confirmationRepository: ConfirmationRepository,
     private val userService: IUserService,
     private val emailService: EmailService
 ): IConfirmationService {
 
-    override fun saveConfirmationToken(token: ConfirmationToken): ConfirmationToken =
-        confirmationTokenRepository.save(token)
+    override fun saveConfirmation(confirmation: Confirmation) {
+        confirmationRepository.addConfirmationByToken(confirmation.token, confirmation)
+    }
 
-    override fun getToken(token: String) =
-        confirmationTokenRepository.findByToken(token)
+    override fun getConfirmation(token: String) =
+        confirmationRepository.findConfirmationByToken(token)
             ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Confirmation token does not exists")
 
-    override fun generateConfirmationToken(user: User) =
-        ConfirmationToken(
+    override fun generateConfirmation(user: User) =
+        Confirmation(
             UUID.randomUUID().toString(),
             LocalDateTime.now(),
             LocalDateTime.now().plusMinutes(15),
             user
         ).also { confirmationToken ->
-            saveConfirmationToken(confirmationToken)
+            saveConfirmation(confirmationToken)
             confirmationToken.sendConfirmationTokenEmail()
         }
 
-    override fun enableUserFromToken(token: String): ConfirmationToken =
-        saveConfirmationToken(
-            getToken(token)
+    override fun enableUserFromConfirmation(token: String) =
+        saveConfirmation(
+            getConfirmation(token)
                 .validateToken()
                 .apply { confirmedAt = LocalDateTime.now() }
-        ).also { confirmationToken -> userService.enableUser(confirmationToken.user) }
+        ).also { confirmationRepository.findConfirmationByToken(token)?.user!!.enabled = true }
 
-    override fun resendConfirmationToken(username: String) {
+    override fun resendConfirmationToUser(username: String) {
         userService.findUserByUsernameOrThrowException(username).also { user ->
             if (user.enabled)
                 throw ResponseStatusException(HttpStatus.BAD_REQUEST, "User token already confirmed")
             expireActiveConfirmationTokenFromUser(user)
-            generateConfirmationToken(user)
+            generateConfirmation(user)
         }
     }
 
     private fun expireActiveConfirmationTokenFromUser(user: User) {
-        confirmationTokenRepository.findNotConfirmedByUser(user)
+        confirmationRepository.findNotConfirmedByUser(user)
             ?.let { confirmationToken ->
-                confirmationTokenRepository.save(
+                saveConfirmation(
                     confirmationToken.apply { revoked = true }
                 )
             }
             ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "User has no unconfirmed confirmation tokens")
     }
 
-    private fun ConfirmationToken.sendConfirmationTokenEmail() =
+    private fun Confirmation.sendConfirmationTokenEmail() =
         emailService.sendEmail(
             user.email,
             "Confirm User",
             "To enable your user, access to the following link: http://localhost:8080/confirm?token=$token"
         )
 
-    private fun ConfirmationToken.validateToken(): ConfirmationToken {
+    private fun Confirmation.validateToken(): Confirmation {
         if (confirmedAt != null)
             throw ResponseStatusException(HttpStatus.BAD_REQUEST, "User token already confirmed")
 

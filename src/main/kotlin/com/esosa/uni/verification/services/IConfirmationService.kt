@@ -1,12 +1,12 @@
 package com.esosa.uni.verification.services
 
 import com.esosa.uni.data.models.User
-import com.esosa.uni.verification.token.ConfirmationToken
+import com.esosa.uni.verification.token.Confirmation
 
 interface IConfirmationService {
-    fun saveConfirmationToken(token: ConfirmationToken): ConfirmationToken
-    fun getToken(token: String): ConfirmationToken
-    fun generateConfirmationToken(user: User): ConfirmationToken
-    fun enableUserFromToken(token: String): ConfirmationToken
-    fun resendConfirmationToken(username: String)
+    fun saveConfirmation(confirmation: Confirmation)
+    fun getConfirmation(token: String): Confirmation
+    fun generateConfirmation(user: User): Confirmation
+    fun enableUserFromConfirmation(token: String)
+    fun resendConfirmationToUser(username: String)
 }

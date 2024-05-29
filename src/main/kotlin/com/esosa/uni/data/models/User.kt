@@ -1,7 +1,6 @@
 package com.esosa.uni.data.models
 
 import com.esosa.uni.data.enums.Role
-import com.esosa.uni.verification.token.ConfirmationToken
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
