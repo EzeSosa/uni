@@ -47,8 +47,19 @@ class ConfirmationService (
         userService.findUserByUsernameOrThrowException(username).also { user ->
             if (user.enabled)
                 throw ResponseStatusException(HttpStatus.BAD_REQUEST, "User token already confirmed")
+            expireActiveConfirmationTokenFromUser(user)
             generateConfirmationToken(user)
         }
+    }
+
+    private fun expireActiveConfirmationTokenFromUser(user: User) {
+        confirmationTokenRepository.findNotConfirmedByUser(user)
+            ?.let { confirmationToken ->
+                confirmationTokenRepository.save(
+                    confirmationToken.apply { revoked = true }
+                )
+            }
+            ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "User has no unconfirmed confirmation tokens")
     }
 
     private fun ConfirmationToken.sendConfirmationTokenEmail() =
@@ -64,6 +75,9 @@ class ConfirmationService (
 
         if (expiredAt.isBefore(LocalDateTime.now()))
             throw ResponseStatusException(HttpStatus.BAD_REQUEST, "User token expired")
+
+        if (revoked)
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "User token revoked")
 
         return this
     }

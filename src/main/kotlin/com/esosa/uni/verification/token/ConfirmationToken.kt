@@ -11,12 +11,13 @@ import java.util.UUID
 data class ConfirmationToken(
     val token: String,
     val createdAt: LocalDateTime,
-    val expiredAt: LocalDateTime,
+    var expiredAt: LocalDateTime,
 
     @ManyToOne
     val user: User,
 
     var confirmedAt: LocalDateTime? = null,
+    var revoked: Boolean = false,
 
     @Id
     val id: UUID = UUID.randomUUID()
