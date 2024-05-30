@@ -1,7 +1,7 @@
-package com.esosa.uni.verification.services
+package com.esosa.uni.services.interfaces
 
 import com.esosa.uni.data.models.User
-import com.esosa.uni.verification.token.Confirmation
+import com.esosa.uni.data.models.Confirmation
 
 interface IConfirmationService {
     fun saveConfirmation(confirmation: Confirmation)

@@ -1,7 +1,7 @@
-package com.esosa.uni.verification.repositories
+package com.esosa.uni.data.repositories
 
 import com.esosa.uni.data.models.User
-import com.esosa.uni.verification.token.Confirmation
+import com.esosa.uni.data.models.Confirmation
 import org.springframework.stereotype.Repository
 
 @Repository

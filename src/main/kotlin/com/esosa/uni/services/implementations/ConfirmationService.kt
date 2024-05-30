@@ -1,10 +1,11 @@
-package com.esosa.uni.verification.services
+package com.esosa.uni.services.implementations
 
 import com.esosa.uni.data.models.User
 import com.esosa.uni.email.EmailService
 import com.esosa.uni.services.interfaces.IUserService
-import com.esosa.uni.verification.repositories.ConfirmationRepository
-import com.esosa.uni.verification.token.Confirmation
+import com.esosa.uni.data.repositories.ConfirmationRepository
+import com.esosa.uni.data.models.Confirmation
+import com.esosa.uni.services.interfaces.IConfirmationService
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException

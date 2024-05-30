@@ -1,6 +1,7 @@
-package com.esosa.uni.verification.controllers
+package com.esosa.uni.controllers.implementations
 
-import com.esosa.uni.verification.services.IConfirmationService
+import com.esosa.uni.controllers.interfaces.IConfirmationController
+import com.esosa.uni.services.interfaces.IConfirmationService
 import org.springframework.web.bind.annotation.RestController
 
 @RestController

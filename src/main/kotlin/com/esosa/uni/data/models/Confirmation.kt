@@ -1,6 +1,5 @@
-package com.esosa.uni.verification.token
+package com.esosa.uni.data.models
 
-import com.esosa.uni.data.models.User
 import java.time.LocalDateTime
 
 data class Confirmation(

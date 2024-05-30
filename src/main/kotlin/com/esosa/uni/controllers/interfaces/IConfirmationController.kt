@@ -1,4 +1,4 @@
-package com.esosa.uni.verification.controllers
+package com.esosa.uni.controllers.interfaces
 
 import jakarta.validation.constraints.NotNull
 import org.springframework.http.HttpStatus.CREATED
