@@ -10,9 +10,9 @@ class ConfirmationController(
 ) : IConfirmationController {
 
     override fun confirm(token: String) {
-        confirmationService.enableUserFromToken(token)
+        confirmationService.enableUserFromConfirmation(token)
     }
 
     override fun resend(username: String) =
-        confirmationService.resendConfirmationToken(username)
+        confirmationService.resendConfirmationToUser(username)
 }
