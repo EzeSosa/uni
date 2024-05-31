@@ -2,6 +2,7 @@ package com.esosa.uni.security.filter
 
 import com.esosa.uni.security.jwt.JWTService
 import com.esosa.uni.security.services.CustomUserDetailsService
+import com.esosa.uni.services.interfaces.ITokenService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -15,7 +16,8 @@ import org.springframework.web.filter.OncePerRequestFilter
 @Component
 class JwtAuthenticationFilter(
     private val userDetailsService: CustomUserDetailsService,
-    private val jwtService: JWTService
+    private val jwtService: JWTService,
+    private val tokenService: ITokenService
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
@@ -36,7 +38,7 @@ class JwtAuthenticationFilter(
         if (username != null && SecurityContextHolder.getContext().authentication == null) {
             val user = userDetailsService.loadUserByUsername(username)
 
-            if (jwtService.isTokenValid(token, user))
+            if (jwtService.isTokenValid(token, user) && !tokenService.isTokenRevoked(token))
                 updateContext(user, request)
 
             filterChain.doFilter(request, response)
@@ -49,10 +51,10 @@ class JwtAuthenticationFilter(
         SecurityContextHolder.getContext().authentication = authToken
     }
 
-    private fun String?.doesNotContainBearerToken() : Boolean =
+    private fun String?.doesNotContainBearerToken(): Boolean =
          this == null || !startsWith("Bearer ")
 
-    private fun String.extractToken() =
+    private fun String.extractToken(): String =
         substringAfter("Bearer ").takeIf { it.isNotBlank() }
             ?: throw IllegalArgumentException("Invalid JWT format")
 }

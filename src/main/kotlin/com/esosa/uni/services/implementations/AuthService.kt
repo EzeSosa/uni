@@ -13,6 +13,8 @@ import com.esosa.uni.security.repositories.RefreshTokenRepository
 import com.esosa.uni.security.services.CustomUserDetailsService
 import com.esosa.uni.services.interfaces.IAuthService
 import com.esosa.uni.services.interfaces.IConfirmationService
+import com.esosa.uni.services.interfaces.ITokenService
+import com.esosa.uni.services.interfaces.IUserService
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -31,9 +33,10 @@ class AuthService(
     private val jwtProperties: JWTProperties,
     private val userRepository: IUserRepository,
     private val encoder: PasswordEncoder,
-    private val userService: UserService,
+    private val userService: IUserService,
     private val refreshTokenRepository: RefreshTokenRepository,
-    private val confirmationService: IConfirmationService
+    private val confirmationService: IConfirmationService,
+    private val tokenService: ITokenService
 ) : IAuthService {
 
     override fun register(registerRequest: RegisterRequest): Unit =
@@ -55,6 +58,8 @@ class AuthService(
             val accessToken = generateAccessToken(user)
             val refreshToken = generateRefreshToken(user)
 
+            tokenService.revokeTokensFromUser(user)
+            tokenService.saveToken(accessToken, user)
             refreshTokenRepository.addUserDetailByToken(refreshToken, user)
 
             AuthResponse(username.extractId(), accessToken, refreshToken)
@@ -66,9 +71,11 @@ class AuthService(
                 val currentUserDetails = userDetailsService.loadUserByUsername(username)
                 val refreshTokenUserDetails = refreshTokenRepository.findUserDetailsByToken(refreshToken)
 
-                if (!jwtService.isTokenExpired(refreshToken) && currentUserDetails.username == refreshTokenUserDetails?.username)
+                if (!jwtService.isTokenExpired(refreshToken) && currentUserDetails.username == refreshTokenUserDetails?.username) {
+                    tokenService.revokeTokensFromUser(currentUserDetails)
                     generateAccessToken(currentUserDetails)
                         .buildRefreshTokenResponse(username.extractId())
+                }
                 else null
             }
         }
