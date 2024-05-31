@@ -28,6 +28,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("io.jsonwebtoken:jjwt-api:0.12.5")
 	implementation("org.springframework.boot:spring-boot-starter-mail:3.2.5")
+	implementation("com.bucket4j:bucket4j-core:8.10.1")
 
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 
