@@ -39,11 +39,12 @@ class ConfirmationService (
         }
 
     override fun enableUserFromConfirmation(token: String) =
-        saveConfirmation(
-            getConfirmation(token)
-                .validateToken()
-                .apply { confirmedAt = LocalDateTime.now() }
-        ).also { confirmationRepository.findConfirmationByToken(token)?.user!!.enabled = true }
+        with(getConfirmation(token)) {
+            saveConfirmation(
+                this.validateToken()
+                    .apply { confirmedAt = LocalDateTime.now() }
+            ).also { userService.enableUser(this.user) }
+        }
 
     override fun resendConfirmationToUser(username: String) {
         userService.findUserByUsernameOrThrowException(username).also { user ->
