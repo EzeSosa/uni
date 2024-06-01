@@ -18,6 +18,6 @@ class BucketConfiguration {
     fun generateBandwidth(): Bandwidth =
         Bandwidth.builder()
             .capacity(20)
-            .refillGreedy(5, Duration.ofMinutes(1))
+            .refillGreedy(20, Duration.ofHours(1))
             .build()
 }

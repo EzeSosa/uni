@@ -11,6 +11,7 @@ import com.esosa.uni.security.jwt.JWTProperties
 import com.esosa.uni.security.jwt.JWTService
 import com.esosa.uni.security.repositories.RefreshTokenRepository
 import com.esosa.uni.security.services.CustomUserDetailsService
+import com.esosa.uni.services.interfaces.IApiKeyService
 import com.esosa.uni.services.interfaces.IAuthService
 import com.esosa.uni.services.interfaces.IConfirmationService
 import com.esosa.uni.services.interfaces.ITokenService
@@ -36,7 +37,8 @@ class AuthService(
     private val userService: IUserService,
     private val refreshTokenRepository: RefreshTokenRepository,
     private val confirmationService: IConfirmationService,
-    private val tokenService: ITokenService
+    private val tokenService: ITokenService,
+    private val apiKeyService: IApiKeyService
 ) : IAuthService {
 
     override fun register(registerRequest: RegisterRequest): Unit =
@@ -45,6 +47,7 @@ class AuthService(
             validateExistsEmail(email)
             userRepository.save(createUser()).also { user ->
                 confirmationService.generateConfirmation(user)
+                apiKeyService.generateApiKey(user)
             }
         }
 

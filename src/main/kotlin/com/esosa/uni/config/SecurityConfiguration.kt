@@ -2,6 +2,7 @@ package com.esosa.uni.config
 
 import com.esosa.uni.data.enums.Role
 import com.esosa.uni.security.filter.JwtAuthenticationFilter
+import com.esosa.uni.utils.WHITE_LIST_URL
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod.POST
@@ -29,7 +30,7 @@ class SecurityConfiguration(
             .csrf { it.disable() }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/auth/**", "/confirm/**", "/error").permitAll()
+                    .requestMatchers(*WHITE_LIST_URL).permitAll()
                     .requestMatchers(POST, "/courses").hasRole(Role.ADMIN.name)
                     .requestMatchers(PATCH, "/courses/**").hasRole(Role.ADMIN.name)
                     .requestMatchers(DELETE, "/courses/**").hasRole(Role.ADMIN.name)
