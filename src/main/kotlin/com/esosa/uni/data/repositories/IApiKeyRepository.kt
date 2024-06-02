@@ -6,4 +6,5 @@ import java.util.UUID
 
 interface IApiKeyRepository: JpaRepository<ApiKey, UUID> {
     fun existsByKey(key: String): Boolean
+    fun findByKey(key: String): ApiKey?
 }

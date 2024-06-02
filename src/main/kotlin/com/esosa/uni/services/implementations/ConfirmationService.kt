@@ -40,7 +40,7 @@ class ConfirmationService (
 
     override fun enableUserFromConfirmation(token: String) =
         with(getConfirmation(token)) {
-            saveConfirmation(this.apply { confirmedAt = LocalDateTime.now() })
+            saveConfirmation(this.validateToken().apply { confirmedAt = LocalDateTime.now() })
             userService.enableUser(this.user)
         }
 

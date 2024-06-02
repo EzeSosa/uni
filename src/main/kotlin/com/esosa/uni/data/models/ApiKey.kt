@@ -11,7 +11,7 @@ data class ApiKey(
     @ManyToOne
     val user: User,
     @Column(name = "_key")
-    val key: String = UUID.randomUUID().toString(),
+    var key: String = UUID.randomUUID().toString(),
     @Id
     val id: UUID = UUID.randomUUID()
 )
