@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import java.util.UUID
 
-@RequestMapping("/exams")
+@RequestMapping("v1/exams")
 interface IExamController {
     @PostMapping
     @ResponseStatus(CREATED)

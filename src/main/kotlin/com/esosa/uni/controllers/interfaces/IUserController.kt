@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import java.time.LocalDate
 import java.util.UUID
 
-@RequestMapping("/users")
+@RequestMapping("v1/users")
 interface IUserController {
     @GetMapping("/{id}/inscriptions")
     @ResponseStatus(OK)

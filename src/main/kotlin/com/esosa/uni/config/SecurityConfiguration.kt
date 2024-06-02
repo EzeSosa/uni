@@ -26,21 +26,17 @@ class SecurityConfiguration(
         jwtAuthenticationFilter: JwtAuthenticationFilter
     ): DefaultSecurityFilterChain =
         http
-            .csrf { it.disable() }
-            .authorizeHttpRequests {
-                it
+            .csrf { csrf -> csrf.disable() }
+            .authorizeHttpRequests { httpRequests ->
+                httpRequests
                     .requestMatchers("/auth/**", "/confirm/**", "/error").permitAll()
-                    .requestMatchers(POST, "/courses").hasRole(Role.ADMIN.name)
-                    .requestMatchers(PATCH, "/courses/**").hasRole(Role.ADMIN.name)
-                    .requestMatchers(DELETE, "/courses/**").hasRole(Role.ADMIN.name)
+                    .requestMatchers(POST, "v1/courses").hasRole(Role.ADMIN.name)
+                    .requestMatchers(PATCH, "v1/courses/**").hasRole(Role.ADMIN.name)
+                    .requestMatchers(DELETE, "v1/courses/**").hasRole(Role.ADMIN.name)
                     .anyRequest().authenticated()
             }
-            .sessionManagement {
-                it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            }
-            .httpBasic {
-                it.disable()
-            }
+            .sessionManagement { session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
+            .httpBasic { basic -> basic.disable() }
             .authenticationProvider(authProvider)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
             .build()

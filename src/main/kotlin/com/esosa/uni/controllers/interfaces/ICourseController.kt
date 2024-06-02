@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import java.util.UUID
 
-@RequestMapping("/courses")
+@RequestMapping("v1/courses")
 interface ICourseController {
     @GetMapping
     @ResponseStatus(OK)

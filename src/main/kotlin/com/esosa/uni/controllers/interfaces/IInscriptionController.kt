@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import java.util.*
 
-@RequestMapping("/inscriptions")
+@RequestMapping("v1/inscriptions")
 interface IInscriptionController {
     @PostMapping
     @ResponseStatus(CREATED)
