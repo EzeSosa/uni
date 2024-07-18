@@ -1,7 +1,5 @@
-                         
+# Uni API
 
-<h1 align="center">Uni API</h1>
-<p align="center">
 A REST API that allows students to register, log in and manage their courses, exams and inscriptions.
 
  ## About The Project
